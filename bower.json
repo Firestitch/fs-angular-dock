@@ -1,0 +1,17 @@
+{
+    "name": "fs-angular-dock",
+    "description": "",
+    "main": [
+        "dist/dock.js",
+        "dist/dock.css"
+    ],
+    "authors": [
+        "Firestitch Inc."
+    ],
+    "license": "MIT",
+    "ignore": [
+        "src",
+        ".gitignore"
+    ],
+    "private": false
+}
