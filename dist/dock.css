@@ -1,8 +1,8 @@
 
 .fs-dock-container {
 	position: fixed;
-	bottom: 15px;
-	right: 15px;
+	bottom: 0;
+	margin: 15px;
 	min-width: 400px;
 	border: 1px solid #ccc;
 	background-color: #fff;

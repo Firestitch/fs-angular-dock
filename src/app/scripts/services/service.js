@@ -20,6 +20,7 @@
         function show(options) {
 
         	var promises = {};
+        	options.anchor = options.anchor || 'left';
         	if(options.resolve) {
         		angular.forEach(options.resolve,function(value,name) {
         			promises[name] = $injector.invoke(value);
@@ -30,13 +31,13 @@
         	.then(function(inject) {
 
 	        	var container = angular.element(document.querySelector('.fs-dock-container'));
+	        	container.remove();
 
-	        	if(!container.length) {
-	        		container = angular.element('<div>').addClass('fs-dock-container');
-	        		angular.element(document.body).append(container);
-	        	}
+	        	container = angular.element('<div>')
+	        					.addClass('fs-dock-container')
+	        					.attr('ng-style','{{dock.style}}');
 
-	        	container.empty();
+	        	angular.element(document.body).append(container);
 
 	       		var template = [
 	                    '<div aria-label="Dock" class="fs-dock {{ dock.options.class }}">',
@@ -53,8 +54,10 @@
 	            var controller = $controller(options.controller,angular.extend({ $scope: scope },inject));
 	            scope.dock = controller;
 	            scope.dock.options = options;
+	            scope.dock.style = {};
+	            scope.dock.style[options.anchor] = '0';
 
-	            $compile(container.contents())(scope);
+	            $compile(container)(scope);
 	        });
         }
 

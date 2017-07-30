@@ -11,6 +11,7 @@
 	    	controller: ['$scope','message',function($scope, message) {
 	    		$scope.message = message;
 	    	}],
+	    	anchor: 'right',
 	    	resolve: {
 	    		message: function() {
 	    			return $q(function(resolve) {
