@@ -14,7 +14,8 @@
 .fs-dock-header {
 	background: #333;
 	color: #fff;
-	padding: 15px;
+	padding: 13px;
+    font-size: 14px;
 }
 
 .fs-dock-header md-icon {
@@ -24,4 +25,5 @@
 .fs-dock-content {
     background: #fff;
     padding: 10px 15px;
+    font-size: 14px;
 }

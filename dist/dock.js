@@ -1,5 +1,7 @@
 
 
+
+
 (function () {
     'use strict';
 
@@ -10,7 +12,7 @@
 
 
     angular.module('fs-angular-dock',[])
-    .service('fsDock', function ($compile, $controller, $rootScope, $q, $injector) {
+    .service('fsDock', function ($compile, $controller, $rootScope, $q, $injector, $sce, $templateRequest) {
 
         var service = {
             show: show,
@@ -41,25 +43,37 @@
 
 	        	angular.element(document.body).append(container);
 
-	       		var template = [
-	                    '<div aria-label="Dock" class="fs-dock {{ dock.options.class }}">',
-	                    '  <div class="fs-dock-header" ng-show="dock.options.title">{{dock.options.title}}</div>',
-	                    '  <div class="fs-dock-content">' + options.template + '</div>',
-	                    '</div>'
-	                    ].join('');
+	        	$q(function(resolve) {
 
-	            container.append(template);
+	        		if(options.template) {
+	        			return resolve(options.template);
+	        		}
 
-	            var scope = $rootScope.$new();
-	            scope.hide = hide;
+    				$templateRequest($sce.getTrustedResourceUrl(options.templateUrl))
+    				.then(resolve);
 
-	            var controller = $controller(options.controller,angular.extend({ $scope: scope },inject));
-	            scope.dock = controller;
-	            scope.dock.options = options;
-	            scope.dock.style = {};
-	            scope.dock.style[options.anchor] = '0';
+		        }).then(function(template) {
 
-	            $compile(container)(scope);
+		       		var template = [
+		                    '<div aria-label="Dock" class="fs-dock {{ dock.options.class }}">',
+		                    '  <div class="fs-dock-header" ng-show="dock.options.title" layout="row" layout-align="start center"><div flex>' + options.title + '</div><a href ng-click="hide()"><md-icon>clear</md-icon></a></div>',
+		                    '  <div class="fs-dock-content">' + template + '</div>',
+		                    '</div>'
+		                    ].join('');
+
+		            container.append(template);
+
+		            var scope = $rootScope.$new();
+		            scope.hide = hide;
+
+		            var controller = $controller(options.controller,angular.extend({ $scope: scope },inject));
+		            scope.dock = controller;
+		            scope.dock.options = options;
+		            scope.dock.style = {};
+		            scope.dock.style[options.anchor] = '0';
+
+		            $compile(container)(scope);
+		        });
 	        });
         }
 
@@ -68,3 +82,4 @@
         }
     });
 })();
+
